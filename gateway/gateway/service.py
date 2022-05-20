@@ -95,6 +95,19 @@ class GatewayService(object):
             mimetype='application/json'
         )
 
+    @http("GET", "/orders")
+    def get_orders(self, request):
+        """Gets the order details for the order given by `order_id`.
+
+        Enhances the order details with full product details from the
+        products-service.
+        """
+        orders = self.orders_rpc.list_orders()
+        return Response(
+            json.dumps(orders),
+            mimetype='application/json'
+        )
+
     def _get_order(self, order_id):
         # Retrieve order data from the orders service.
         # Note - this may raise a remote exception that has been mapped to

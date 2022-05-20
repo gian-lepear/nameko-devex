@@ -4,7 +4,7 @@ from nameko_sqlalchemy import DatabaseSession
 
 from orders.exceptions import NotFound
 from orders.models import DeclarativeBase, Order, OrderDetail
-from orders.schemas import OrderSchema
+from orders.schemas import OrderSchema, OrderDetailSchema
 
 
 class OrdersService:
@@ -21,6 +21,12 @@ class OrdersService:
             raise NotFound('Order with id {} not found'.format(order_id))
 
         return OrderSchema().dump(order).data
+
+    @rpc
+    def list_orders(self):
+        orders = self.db.query(OrderDetail).all()
+        orders = [OrderDetailSchema().dump(order).data for order in orders]
+        return orders
 
     @rpc
     def create_order(self, order_details):
