@@ -24,8 +24,8 @@ class OrdersService:
 
     @rpc
     def list_orders(self):
-        orders = self.db.query(OrderDetail).all()
-        orders = [OrderDetailSchema().dump(order).data for order in orders]
+        orders = self.db.query(Order).all()
+        orders = [OrderSchema().dump(order).data for order in orders]
         return orders
 
     @rpc
