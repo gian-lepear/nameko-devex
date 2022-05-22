@@ -304,3 +304,35 @@ class TestCreateOrder(object):
         assert response.status_code == 404
         assert response.json()['error'] == 'PRODUCT_NOT_FOUND'
         assert response.json()['message'] == 'Product Id unknown'
+
+
+class TestListOrder(object):
+    def test_can_list_order(self, gateway_service, web_session):
+        gateway_service.orders_rpc.list_orders.return_value = [
+            {
+                "id": 1,
+                "order_details": [
+                    {
+                        "price": "100000.99",
+                        "id": 1,
+                        "product_id": "the_odyssey",
+                        "quantity": 1
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "order_details": [
+                    {
+                        "price": "100000.99",
+                        "id": 2,
+                        "product_id": "the_odyssey",
+                        "quantity": 1
+                    }
+                ]
+            }
+        ]
+        response = web_session.get('/orders')
+        payload = response.json()
+        assert len(payload) == 2
+        assert response.status_code == 200
