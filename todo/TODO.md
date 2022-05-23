@@ -1,6 +1,16 @@
 
 # Tasks
 
+## Follow [README-DevEnv.md](https://github.com/gitricko/nameko-devex/blob/master/README-DevEnv.md ( https://github.com/gitricko/nameko-devex/blob/master/README-DevEnv.md )) to setup dev environment for exercise
+
+### Able to
+
+  - Run locally
+  - Debug
+  - Unit-test
+  - Smoke-test
+  - Performance test
+
 ## Execute performance test
 
 ### Performance test before the code update
