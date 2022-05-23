@@ -47,19 +47,19 @@ Link to [perf-test](https://a.blazemeter.com/app/?public-token=PaOatNG7HQYx9RSqx
 ## Question 1: Why is performance degrading as the test run longer ?
   
   - Before the code changes:
-    1. The `_get_order` method in `gateway/gateway/service.py` was fetching all the prodcuts from the Storage to get the products for an order.
+    1. The `_get_order` method in `gateway/gateway/service.py` was fetching all the products from the Storage to get the products for an order.
     2. The `_create_order` method in `gateway/gateway/service.py` was fetching all the products from the Storage to check if the `order_data` had a valid `product_id`.
     3. The `_create_order` method in `gateapi/gateapi/api/routers/order.py` was fetching all the products from the Storage to check if the `order_data` had a valid `product_id`.
 
   - After the code changes:
-    1. With the addition of the list orders endpoint the performance test started degrading again beacause the longer the test ran the more orders were fetched from the database as seen with this graph from Blazemeter:
+    1. With the addition of the list orders endpoint the performance test started degrading again because the longer the test ran the more orders were fetched from the database as seen with this graph from Blazemeter:
   
     ![Orders list endpoints performance test](after_changes3.png)
 
 ## Question 2: How do you fix it ?
   - Before the code changes:
-    1. I would update the `_get_order` method by changing the `product_rpc.list()` to a `product_rpc.get()` to do the enhancing the order details.
-    2. I would update the `_create_order` method and replace the validation made fetching all the products using `products_rpc.list()` with `products_rpc.get()` to speed up the validation process.
+    1. I would update the `_get_order` method by changing the `product_rpc.list()` to a `product_rpc.get()` to enhance the order details.
+    2. I would update the `_create_order` method and replace the validation made by fetching all the products using `products_rpc.list()` with `products_rpc.get()` to speed up the validation process.
     3. I would update the `_create_order` method and replace the `product_id` validation process made with `product_rpc.list()` with the `prodcut_rpc.get()` method.
 
   - After the code changes:
