@@ -63,7 +63,7 @@ scenarios:
       extract-jsonpath:
         product_key: $.id
         default: NOT_FOUND
-
+  
     # 3. Create Orders
     - url: /orders
       label: orders-create
@@ -108,6 +108,36 @@ scenarios:
     - if: '"${order_id}" == "NOT_FOUND"'
       then:
         - action: continue
+    
+    # 5. List orders
+    - url: /orders
+      label: order-list
+      think-time: uniform(0s, 0s)
+      method: GET
+      
+      assert:
+      - contains:
+        - 200
+        subject: http-code
+        not: false
+      extract-jsonpath:
+        order_details: $.[0].order_details
+        order_id: $.[0].id
+
+    # 6. Delete Product 
+    - url: /products/${product_id}
+      label: product-delete
+      think-time: uniform(0s, 0s)
+      method: DELETE
+      assert:
+      - contains:
+        - 200
+        subject: http-code
+        not: false
+    - if: '"${product_id}" == "NOT_FOUND"'
+      then:
+        - action: continue
+
   
 reporting:
 - module: final-stats
